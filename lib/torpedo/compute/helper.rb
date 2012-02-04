@@ -2,10 +2,11 @@ if RUBY_VERSION =~ /^1.9.*/ then
   gem 'test-unit'
 end
 require 'test/unit'
-if OPENSTACK_COMPUTE_VERSION
-  gem 'openstack-compute', OPENSTACK_COMPUTE_VERSION
-end
-require 'openstack/compute'
+#if OPENSTACK_COMPUTE_VERSION
+#  gem 'openstack-compute', OPENSTACK_COMPUTE_VERSION
+#end
+#require 'openstack/compute'
+require '~/work/ruby-openstack-compute/lib/openstack/compute.rb'
 
 module Torpedo
 module Compute
@@ -22,8 +23,9 @@ module Helper
     username = ENV['NOVA_USERNAME'] || ENV['OS_AUTH_USER']
     authtenant = ENV['NOVA_PROJECT_ID'] || ENV['OS_AUTH_TENANT']
     region = ENV['NOVA_REGION_NAME'] || ENV['OS_AUTH_REGION']
+    service_name = ENV['NOVA_SERVICE_NAME'] || "compute"
 
-    OpenStack::Compute::Connection.new(:username => username, :api_key => api_key, :auth_url => auth_url, :region => region, :authtenant => authtenant, :is_debug => debug)
+    OpenStack::Compute::Connection.new(:username => username, :api_key => api_key, :auth_url => auth_url, :region => region, :authtenant => authtenant, :service_name => service_name :is_debug => debug)
   end
 
   def self.get_image_ref(conn)
