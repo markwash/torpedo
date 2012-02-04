@@ -7,7 +7,7 @@ require 'test/unit'
 #end
 #require 'openstack/compute'
 puts "GETTING BINDINGS"
-require '~/work/ruby-openstack-compute/lib/openstack/compute.rb'
+require '~/torpedo-test/ruby-openstack-compute/lib/openstack/compute.rb'
 
 module Torpedo
 module Compute
