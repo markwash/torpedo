@@ -6,7 +6,7 @@ require 'test/unit'
 #  gem 'openstack-compute', OPENSTACK_COMPUTE_VERSION
 #end
 #require 'openstack/compute'
-require '../../../../ruby-openstack-compute/lib/openstack/compute.rb'
+require 'ruby-openstack-compute/lib/openstack/compute.rb'
 
 module Torpedo
 module Compute
