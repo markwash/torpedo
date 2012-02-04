@@ -6,6 +6,7 @@ require 'test/unit'
 #  gem 'openstack-compute', OPENSTACK_COMPUTE_VERSION
 #end
 #require 'openstack/compute'
+puts "GETTING BINDINGS"
 require '~/work/ruby-openstack-compute/lib/openstack/compute.rb'
 
 module Torpedo
