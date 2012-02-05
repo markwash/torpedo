@@ -84,7 +84,7 @@ class Servers < Test::Unit::TestCase
       Timeout::timeout(PING_TIMEOUT) do
 
         while(1) do
-          if system("ping -c 1 #{ip_addr} > /dev/null 2>&1") then
+          if system("ping6 -c 1 #{ip_addr} > /dev/null 2>&1") then
             return true
           end
         end
@@ -120,14 +120,14 @@ class Servers < Test::Unit::TestCase
       fail('Timeout creating server.')
     end
 
-    # lookup the first IPv4 address and use that for verification
-    v4_addresses = server.addresses[:public].reject {|addr| addr.version != 4}
-    ping_test(v4_addresses[0].address) if TEST_PING
+    # lookup the first IPv6 address and use that for verification
+    v6_addresses = server.addresses[:public].reject {|addr| addr.version != 6}
+    ping_test(v6_addresses[0].address) if TEST_PING
     if TEST_SSH
       if TEST_ADMIN_PASSWORD
-        ssh_test(v4_addresses[0].address, "cat /tmp/foo/bar", "yo")
+        ssh_test(v6_addresses[0].address, "cat /tmp/foo/bar", "yo")
       else
-        ssh_test(v4_addresses[0].address)
+        ssh_test(v6_addresses[0].address)
       end
     end
 
