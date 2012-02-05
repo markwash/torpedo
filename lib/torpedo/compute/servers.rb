@@ -81,10 +81,16 @@ class Servers < Test::Unit::TestCase
 
   def ping_test(ip_addr)
     begin
+      if TEST_IP_TYPE == 6
+        ping_command = "ping6 -c 1 #{ip_addr} > /dev/null 2>&1"
+      else
+        ping_command = "ping -c 1 #{ip_addr} > /dev/null 2>&1"
+      end
+      
       Timeout::timeout(PING_TIMEOUT) do
 
         while(1) do
-          if system("ping6 -c 1 #{ip_addr} > /dev/null 2>&1") then
+          if TEST_IP_TYPE == 6 and system("ping6 -c 1 #{ip_addr} > /dev/null 2>&1") then
             return true
           end
         end
@@ -121,7 +127,7 @@ class Servers < Test::Unit::TestCase
     end
 
     # lookup the first IPv6 address and use that for verification
-    v6_addresses = server.addresses[:public].reject {|addr| addr.version != 6}
+    addresses = server.addresses[:public].reject {|addr| addr.version != TEST_IP_TYPE}
     ping_test(v6_addresses[0].address) if TEST_PING
     if TEST_SSH
       if TEST_ADMIN_PASSWORD
