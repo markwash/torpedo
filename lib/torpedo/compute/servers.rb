@@ -128,12 +128,12 @@ class Servers < Test::Unit::TestCase
 
     # lookup the first IPv6 address and use that for verification
     addresses = server.addresses[:public].reject {|addr| addr.version != TEST_IP_TYPE}
-    ping_test(v6_addresses[0].address) if TEST_PING
+    ping_test(addresses[0].address) if TEST_PING
     if TEST_SSH
       if TEST_ADMIN_PASSWORD
-        ssh_test(v6_addresses[0].address, "cat /tmp/foo/bar", "yo")
+        ssh_test(addresses[0].address, "cat /tmp/foo/bar", "yo")
       else
-        ssh_test(v6_addresses[0].address)
+        ssh_test(addresses[0].address)
       end
     end
 
