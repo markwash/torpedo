@@ -19,7 +19,6 @@ TEST_REVERT_RESIZE_SERVER=configs['test_revert_resize_server'] || false
 TEST_ADMIN_PASSWORD=configs['test_admin_password'] || false
 TEST_HOSTID_ON_RESIZE=configs['test_hostid_on_resize'] || false
 TEST_IP_TYPE=configs['test_ip_type'] || 4
-puts "TEST IP TYPE: " + TEST_IP_TYPE.to_s
 CLEAN_UP_SERVERS=configs.fetch('clean_up_servers', true)
 CLEAN_UP_IMAGES=configs.fetch('clean_up_images', true)
 KEYPAIR=configs['keypair']
