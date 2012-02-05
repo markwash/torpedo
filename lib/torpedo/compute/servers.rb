@@ -126,7 +126,7 @@ class Servers < Test::Unit::TestCase
       fail('Timeout creating server.')
     end
 
-    # lookup the first IPv6 address and use that for verification
+    # lookup the first public IP address and use that for verification
     addresses = server.addresses[:public].reject {|addr| addr.version != TEST_IP_TYPE}
     ping_test(addresses[0].address) if TEST_PING
     if TEST_SSH
