@@ -277,6 +277,11 @@ class Servers < Test::Unit::TestCase
       fail('Timeout creating image snapshot.')
     end
 
+    # Sleep for a while to deal with the delay between the image going active
+    # and when we are actually allowed to do stuff to the instance again.
+    # This workaround should be removed when compute is fixed.
+    sleep 15
+
     # Overwrite image_ref to make all subsequent tests use this snapshot
     @@image_ref = image.id.to_s
 
@@ -284,7 +289,17 @@ class Servers < Test::Unit::TestCase
 
   def test_030_rebuild
     # NOTE: this will use the snapshot if TEST_CREATE_IMAGE is enabled
-    @@server.rebuild!(:adminPass => @@admin_pass, :imageRef => @@image_ref, :personality => get_personalities)
+    retried = False
+    begin
+      @@server.rebuild!(:adminPass => @@admin_pass, :imageRef => @@image_ref, :personality => get_personalities)
+    rescue OpenStack::Compute::Exception => e
+      if e.code == "409"
+        retried = True
+        sleep 15
+        retry
+      end
+      raise
+    end
     server = @conn.server(@@server.id)
     sleep 15 # sleep a couple seconds until rebuild starts
     check_server(server, @@image_ref, @@flavor_ref)
