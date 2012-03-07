@@ -269,6 +269,9 @@ class Servers < Test::Unit::TestCase
     begin
       timeout(SERVER_BUILD_TIMEOUT) do
         until image.status == 'ACTIVE' do
+          if image.status == 'ERROR'
+            fail('Image ERROR state detected when creating image!')
+          end
           image = @conn.image(image.id)
           sleep 1
         end
@@ -289,12 +292,12 @@ class Servers < Test::Unit::TestCase
 
   def test_030_rebuild
     # NOTE: this will use the snapshot if TEST_CREATE_IMAGE is enabled
-    retried = False
+    retried = false
     begin
       @@server.rebuild!(:adminPass => @@admin_pass, :imageRef => @@image_ref, :personality => get_personalities)
     rescue OpenStack::Compute::Exception => e
       if e.code == "409"
-        retried = True
+        retried = true
         sleep 15
         retry
       end
